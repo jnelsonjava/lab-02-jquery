@@ -12,7 +12,7 @@ $.ajax('data/page-1.json', optionObject)
     listOfAnimals.forEach(newAnimal => {
       new Animal(newAnimal.image_url, newAnimal.title, newAnimal.description, newAnimal.keyword, newAnimal.horns);
     })
-    holdAllAnimals.forEach(eachAnimal => eachAnimal.render())
+    holdAllAnimals.forEach(eachAnimal => eachAnimal.renderMustache())
     holdAllAnimals.forEach(eachOption => eachOption.addOption())
   });
 
@@ -25,14 +25,20 @@ function Animal (image_url, title, description, keyword, horns){
   holdAllAnimals.push(this);
 }
 
-Animal.prototype.render = function(){
-  const $templateClone = $('#photo-template').clone();
+// Animal.prototype.render = function(){
+//   const $templateClone = $('#photo-template').clone();
 
-  $templateClone.find('h2').text(this.title);
-  $templateClone.find('img').attr('src', this.image_url).attr('alt', this.description);
-  $templateClone.find('p').text(this.description);
-  $('main').append($templateClone);
-}
+//   $templateClone.find('h2').text(this.title);
+//   $templateClone.find('img').attr('src', this.image_url).attr('alt', this.description);
+//   $templateClone.find('p').text(this.description);
+//   $('main').append($templateClone);
+// }
+
+Animal.prototype.renderMustache = function(){
+  const template = $('#photo-template').html();
+  const newElement = Mustache.render(template, this);
+  $('main').append(newElement);
+};
 
 Animal.prototype.addOption = function(){
   const $optionClone = $('option:first-child').clone();
@@ -74,7 +80,7 @@ $('button').on('click', function(){
       listOfAnimals.forEach(newAnimal => {
         new Animal(newAnimal.image_url, newAnimal.title, newAnimal.description, newAnimal.keyword, newAnimal.horns);
       })
-      holdAllAnimals.forEach(eachAnimal => eachAnimal.render())
+      holdAllAnimals.forEach(eachAnimal => eachAnimal.renderMustache())
       holdAllAnimals.forEach(eachOption => eachOption.addOption())
       $('#photo-template').hide();
     });
