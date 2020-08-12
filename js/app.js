@@ -1,6 +1,6 @@
 'use strict'
 
-const holdAllAnimals = [];
+let holdAllAnimals = [];
 
 const optionObject = {
   method: 'get',
@@ -61,4 +61,22 @@ $('select').change(function(){
       })
     }
   });
+})
+
+$('button').on('click', function(){
+  $('section').hide();
+  $('#photo-template').show();
+  holdAllAnimals = [];
+  $('option').hide();
+  $('option:first-child').show();
+  $.ajax('data/page-2.json', optionObject)
+    .then(function(listOfAnimals){
+      listOfAnimals.forEach(newAnimal => {
+        new Animal(newAnimal.image_url, newAnimal.title, newAnimal.description, newAnimal.keyword, newAnimal.horns);
+      })
+      holdAllAnimals.forEach(eachAnimal => eachAnimal.render())
+      holdAllAnimals.forEach(eachOption => eachOption.addOption())
+      $('#photo-template').hide();
+    });
+
 })
