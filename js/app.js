@@ -12,6 +12,7 @@ $.ajax('data/page-1.json', optionObject)
     listOfAnimals.forEach(newAnimal => {
       new Animal(newAnimal.image_url, newAnimal.title, newAnimal.description, newAnimal.keyword, newAnimal.horns);
     })
+    sortByHorns();
     holdAllAnimals.forEach(eachAnimal => eachAnimal.renderMustache())
     holdAllAnimals.forEach(eachOption => eachOption.addOption())
   });
@@ -23,6 +24,18 @@ function Animal (image_url, title, description, keyword, horns){
   this.keyword = keyword;
   this.horns = horns;
   holdAllAnimals.push(this);
+}
+
+function sortByHorns(){
+  holdAllAnimals.sort((left, right) => {
+    if(left.horns > right.horns){
+      return 1;
+    } else if(left.horns < right.horns){
+      return -1;
+    } else {
+      return 0;
+    }
+  });
 }
 
 // Animal.prototype.render = function(){
@@ -80,6 +93,17 @@ $('button').on('click', function(){
       listOfAnimals.forEach(newAnimal => {
         new Animal(newAnimal.image_url, newAnimal.title, newAnimal.description, newAnimal.keyword, newAnimal.horns);
       })
+      sortByHorns();
+      // holdAllAnimals.sort((left, right) => {
+      //   if(left.horns > right.horns){
+      //     return 1;
+      //   } else if(left.horns < right.horns){
+      //     return -1;
+      //   } else {
+      //     return 0;
+      //   }
+      // });
+
       holdAllAnimals.forEach(eachAnimal => eachAnimal.renderMustache())
       holdAllAnimals.forEach(eachOption => eachOption.addOption())
       $('#photo-template').hide();
